@@ -9,12 +9,37 @@
   </head>
 
   <body>
-    <%= link_to 'courses', courses_path %>
-    <%= link_to 'people', people_path %>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><%= link_to 'courses', courses_path %></li>
+          <li><%= link_to 'people', people_path %></li>
+        </ul>
+        <p class="nav navbar-nav navbar-right">
+        <% if person_signed_in? %>
+          Logged in as <strong><%= current_person.email %></strong>.
+          <%= link_to 'Edit profile', edit_person_registration_path, :class => 'navbar-link' %> |
+          <%= link_to "Logout", destroy_person_session_path, method: :delete, :class => 'navbar-link'  %>
+        <% else %>
+          <%= link_to "Sign up", new_person_registration_path, :class => 'navbar-link'  %> |
+          <%= link_to "Login", new_person_session_path, :class => 'navbar-link'  %>
+        <% end %>
+        </p>
+      </div>
+    </div>
+  </nav>
+
     <% if @course %>
       <div>
         <%= render 'courses/navbar', course: @course %>
       </div>
+    <% end %>
+    <% if notice %>
+    <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
     <% end %>
     <%= yield %>
   </body>
